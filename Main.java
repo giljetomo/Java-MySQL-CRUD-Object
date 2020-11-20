@@ -29,8 +29,8 @@ public class Main {
 			
 			switch (choice) {
 			case 1: {
-				Student s = getUserInput();
-				insertRow(s);
+				Student newStudent = getUserInput();
+				insertRow(newStudent);
 				break;
 			} 
 			case 2: {
@@ -38,7 +38,8 @@ public class Main {
 				break;
 			}
 			case 3: {
-				deleteStudent();
+				Student s = getUserInput();
+				deleteStudent(s);
 				break;
 			}
 			case 4: {
@@ -51,10 +52,9 @@ public class Main {
 		}
 	}
 
-	private static void deleteStudent() {
+	private static void deleteStudent(Student s) {
 
 		try {
-			Student s = getUserInput();
 			
 			Connection conn = getConnection();
 			PreparedStatement deleteStudent = conn.prepareStatement(DELETE_STUDENT);
@@ -63,7 +63,7 @@ public class Main {
 			
 			int num = deleteStudent.executeUpdate();
 			
-			System.out.println(num + " record deleted.\n");
+			System.out.println(num + " record(s) deleted.\n");
 					
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -98,9 +98,9 @@ public class Main {
 			Connection conn = getConnection();
 			PreparedStatement selectStatement = conn.prepareStatement(SELECT_STUDENTS);
 			ResultSet rs = selectStatement.executeQuery();
-			
+			int counter = 0;
 			while(rs.next()) {
-				System.out.println(rs.getString("firstName") + ", " + rs.getString("lastName"));
+				System.out.println(++counter + ". " + rs.getString("firstName") + ", " + rs.getString("lastName"));
 			}
 			System.out.println();
 			
